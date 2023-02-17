@@ -46,6 +46,7 @@ class Boyan(BaseEnvironment):
         else:
             if self.state == 0:
                 terminal = True
+                reward = 0
             elif self.state == 1:
                 reward = 0
                 self.state = 0
