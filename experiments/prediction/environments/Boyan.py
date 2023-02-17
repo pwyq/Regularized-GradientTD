@@ -2,8 +2,8 @@ import numpy as np
 from RlGlue import BaseEnvironment
 
 # Constants
-RIGHT = 0
-SKIP = 1
+RIGHT = 0   # move from state s to state s-1
+JUMP = 1    # move from state s to state s-2
 
 NUM_STATES = 98
 NUM_FEATURES = 25
@@ -35,18 +35,23 @@ class Boyan(BaseEnvironment):
         reward = -3
         terminal = False
 
-        if a == SKIP and self.state > 9:
-            print("Double right action is not available in state 10 or state 11... Exiting now.")
-            exit()
-
-        if a == RIGHT:
-            self.state = self.state + 1
-        elif a == SKIP:
-            self.state = self.state + 2
-
-        if (self.state == 12):
-            terminal = True
-            reward = -2
+        # if a == JUMP and self.state > 9:
+        #     print("Double right action is not available in state 10 or state 11... Exiting now.")
+        #     exit()
+        if self.state > 2:
+            if a == RIGHT:
+                self.state = self.state - 1
+            elif a == JUMP:
+                self.state = self.state - 2
+        else:
+            if self.state == 0:
+                terminal = True
+            elif self.state == 1:
+                reward = 0
+                self.state = 0
+            elif self.state == 2:
+                reward = -2
+                self.state = 1
 
         return (reward, self.state, terminal)
 
